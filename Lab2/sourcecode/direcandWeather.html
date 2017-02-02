@@ -1,0 +1,125 @@
+
+<!DOCTYPE html>
+<html lang="" data-ng-app="GoogleDirection">
+<head>
+    <meta t="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Angular Demo</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.min.js" type="application/javascript"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAegioC6H0PFeTMfT2V_GQd95ksECCKrdQ&v=3.exp&sensor=true"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAegioC6H0PFeTMfT2V_GQd95ksECCKrdQ&libraries=places"></script>
+    <link rel="stylesheet" href="css/main.css">
+
+    <style>
+        #map-canvas {
+            width: 650px;
+            height: 450px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="wrapp" ng-controller="googlemapoutput">
+    <div class="pac-card" id="pac-card">
+        <input id="startlocation" type="text" placeholder="Start location">
+        <input id="endlocation" type="text" placeholder="End location">
+        <script>
+            var input = document.getElementById('startlocation');
+            var input2 = document.getElementById('endlocation');
+            var autocomplete = new google.maps.places.Autocomplete(input);
+            var autocomplete2 = new google.maps.places.Autocomplete(input2);
+            autocomplete.bindTo('bounds', map);
+            autocomplete2.bindTo('bounds',map);
+        </script>
+        <button id="btn" ng-click="calcRoute()">
+            Get Direction
+        </button>
+        <button id="btnwtr" ng-click="getWeather()">
+            Get Weather</button>
+        <br/></br>
+        <div class="weathermodule">
+            <p class="presentweatherStart" id="weather1"></p>
+            <p class="presentweatherEnd" id="weather2"></p>
+        </div>
+    </div>
+
+    <div id="map-canvas" style="height: 400px"></div>
+</div>
+</body>
+</html>
+
+
+<script>
+    angular.module('GoogleDirection', [])
+        .controller('googlemapoutput', function ($scope, $http) {
+
+            var map;
+            var mapOptions;
+            var directionsDisplay = new google.maps.DirectionsRenderer({
+                draggable: true
+            });
+            var directionsService = new google.maps.DirectionsService();
+
+            $scope.initialize = function () {
+                var pos = new google.maps.LatLng(0, 0);
+                var mapOptions = {
+                    zoom: 3,
+                    center: pos
+                };
+
+                map = new google.maps.Map(document.getElementById('map-canvas'),
+                    mapOptions);
+            };
+            $scope.getWeather = function(){
+                $http.get('http://api.openweathermap.org/data/2.5/weather?q=' +$scope.startlocation+ '&APPID=7bed426970e467f0b3bec13fec4359c2').success(function(data){
+                    console.log(data);
+                    a=data.main.temp;
+                    b=data.weather.main;
+                    temp=a-272.15;
+                    console.log(temp);
+                    document.getElementById("weather1").innerHTML="present temperature at" + $scope.startlocation + "is" + temp +"&deg; C"
+                });
+
+                $http.get('http://api.openweathermap.org/data/2.5/weather?q=' +$scope.endlocation+ '&APPID=7bed426970e467f0b3bec13fec4359c2').success(function(data){
+                    console.log(data);
+                    c=data.main.temp;
+                    d=data.weather.main;
+                    temp2=c-272.15;
+                    console.log(temp2);
+                    document.getElementById("weather2").innerHTML="present temperature at" + $scope.endlocation + "is" + temp2 +"&deg; C"
+                });
+            };
+
+            $scope.calcRoute = function () {
+                var end = document.getElementById('endlocation').value;
+                var start = document.getElementById('startlocation').value;
+
+                var request = {
+                    origin: start,
+                    destination: end,
+                    travelMode: google.maps.TravelMode.DRIVING
+                };
+
+                directionsService.route(request, function (response, status) {
+                    if (status == google.maps.DirectionsStatus.OK) {
+                        directionsDisplay.setMap(map);
+                        directionsDisplay.setDirections(response);
+                        console.log(status);
+                    }
+
+                });
+            };
+
+            google.maps.event.addDomListener(window, 'load', $scope.initialize);
+
+        });
+
+
+
+</script>
+
+
+
+
+
