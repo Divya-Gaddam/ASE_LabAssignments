@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Register Page</title>
+
+    <!-- Bootstrap -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+</head>
+<body>
+<div class="span3 well">
+    <form class="form-horizontal" action="javascript:void(0);" method="GET">
+        <fieldset>
+            <div id="legend">
+                <legend class="signin">Register</legend>
+            </div>
+            <div class="control-group">
+                <!-- Username -->
+                <label class="control-label" for="usr">Username</label>
+                <div class="controls">
+                    <input id="usr" type="text" name="usr" placeholder="" class="input-xlarge">
+                </div>
+            </div>
+
+            <div class="control-group">
+                <!-- E-mail -->
+                <label class="control-label" for="email">E-mail</label>
+                <div class="controls">
+                    <input type="text" id="email" name="email" placeholder="" class="input-xlarge">
+                </div>
+            </div>
+
+            <div class="control-group">
+                <!-- Password-->
+                <label class="control-label" for="pswrd">Password</label>
+                <div class="controls">
+                    <input id="pswrd" type="password" name="pswrd" placeholder="" class="input-xlarge">
+                </div>
+            </div>
+            <div class="control-group">
+                <!-- Password -->
+                <label class="control-label"  for="password_confirm">Password (Confirm)</label>
+                <div class="controls">
+                    <input type="password" id="password_confirm" name="password_confirm" placeholder="" class="input-xlarge"></div>
+            </div>
+
+            <div class="control-group">
+                <!-- Button -->
+                <div class="controls">
+                    <!-- <a onclick="location.href='http://localhost:63342/Angular-Ajax/login.html?_ijt=4a284dsvcablgt3itsdfkm2t4r';" class="btn btn-success" onclick="store()">Sign up </a>-->
+                    <input type="submit" value="Sign Up" class="btn btn-success" onclick="store()">
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+</div>
+
+</body>
+</html>
+<script>
+    var usr = document.getElementById('usr');
+    var pswrd = document.getElementById('pswrd');
+    // storing input from register-form
+    function store() {
+        localStorage.setItem('usr', usr.value);
+        localStorage.setItem('pswrd', pswrd.value);
+        self.location = "login.html";
+        //window.navigate("logindd.html");
+        //alert("back");
+        //window.history.back(-1);
+    }
+</script>
