@@ -19,6 +19,7 @@
 
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="fblogin.js"></script>
 
 </head>
 <body>
@@ -77,42 +78,5 @@
             self.location="direcandWeather.html";
             //window.navigate("directions.html");
         }
-    }
-</script>
-<script>
-    window.fbAsyncInit = function () {
-        FB.init({
-            appId: '810568345751128',
-            xfbml: true,
-            version: 'v2.7'
-        });
-        FB.getLoginStatus(function (response) {
-            if (response.status === 'connected') {
-                document.getElementById('status').innerHTML = 'We are connected to FaceBook';
-            } else if (response.status === 'not_authorized') {
-                document.getElementById('status').innerHTML = 'We are not connected to FaceBook';
-            } else{
-                document.getElementById('status').innerHTML = 'We are not logged into FaceBook';
-            }
-        });
-    };
-    (function(thisdocument, scriptelement, id) {
-        var js, fjs = thisdocument.getElementsByTagName(scriptelement)[0];
-        if (thisdocument.getElementById(id)) return;
-        js = thisdocument.createElement(scriptelement); js.id = id;
-        js.src = "//connect.facebook.net/en_US/sdk.js"; //you can use
-        fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));
-    function  login() {
-        FB.login(function (response) {
-            if (response.status === 'connected') {
-                self.location="home.html";
-//document.getElementById('status').innerHTML = 'We are connected to FaceBook';
-            } else if (response.status === 'not_authorized') {
-                document.getElementById('status').innerHTML = 'We are not connected to FaceBook';
-            } else{
-                document.getElementById('status').innerHTML = 'We are not logged into FaceBook';
-            }
-        });
     }
 </script>
