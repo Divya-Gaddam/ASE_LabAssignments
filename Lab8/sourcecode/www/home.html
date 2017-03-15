@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title></title>
+    <link rel="manifest" href="manifest.json">
+
+    <!-- un-comment this code to enable service worker
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('service-worker.js')
+          .then(() => console.log('service worker installed'))
+          .catch(err => console.log('Error', err));
+      }
+    </script>-->
+
+    <link href="lib/ionic/css/ionic.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
+    <link href="css/ionic.app.css" rel="stylesheet">
+    -->
+
+    <!-- ionic/angularjs js -->
+    <script src="lib/ionic/js/ionic.bundle.js"></script>
+
+    <!-- cordova script (this will be a 404 during development) -->
+    <script src="cordova.js"></script>
+
+    <!-- your app's js -->
+    <script src="js/app.js"></script>
+      
+  </head>
+    
+  <body ng-app="starter">
+
+    <ion-pane title="Product Search">
+      
+      <ion-content ng-controller="ExampleController" padding="true" style="background: url(img/background.jpg) no-repeat center;background-size:cover;" >
+    
+	<center><h1 style='color:#E0E0E0;'>SEARCH FOR MOVIE OR A TV SHOW</h1></center>
+	<label class="item item-input" id="login-input1">
+                    <span class="input-label">SEARCH</span>
+                    <input type="text" placeholder="" id="search">
+    </label>
+    
+	
+          <button class="button button-block button-balanced" onclick="getData()">Get Search Details</button>
+          <div id="id01">
+		  
+		  </div>
+		  <br>
+        <button class="button button-block button-positive" onclick="analysis()">Get Analysis of the plot from uClassify API</button>
+         <div id="id02">
+		  
+		  </div> 
+        <a  id="signup-button7" class="button button-assertive button-block "onclick="location.href='index.html'">Log out</a>
+          <button class="button button-energized  button-block" ng-click="vibration()">Vibrate</button>
+      </ion-content>
+    </ion-pane>
+      
+      <script>
+angular.module("vib",['ngCordova'])
+.controller("HomeCtrl",function ($scope,$http,$cordovaVibration) {
+    $scope.vibration = function () {
+        $cordovaVibration.vibrate(1000); 
+    }
+});
+
+	
+var plot;
+function getData() {
+    var txt = document.getElementById("search").value;
+	var xmlhttp = new XMLHttpRequest();
+	
+    var url = "http://www.omdbapi.com/?t="+txt;
+    xmlhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        var myArr = JSON.parse(this.responseText);
+        myFunction(myArr);
+    }
+};
+xmlhttp.open("GET", url, true);
+xmlhttp.send();
+function myFunction(arr) {
+    var out = "";
+    out="<h2 style='color:#E0E0E0;'>Title: "+arr.Title+"</h2>"
+    out+="<h2 style='color:#E0E0E0;'>Release details: "+arr.Released+"</h2>"
+	out+="<h2 style='color:#E0E0E0;'>Genre: "+arr.Genre+"</h2>"
+	plot=arr.Plot;
+	out+="<h2 style='color:#E0E0E0;'>Plot: "+arr.Plot+"</h2>"
+	out+="<h2 style='color:#E0E0E0;'>imdbRating: "+arr.imdbRating+"</h2>"
+	out+="<img src="+arr.Poster+"></img>"
+    document.getElementById("id01").innerHTML = out;
+}
+}
+
+
+function analysis() {
+	var xmlhttp = new XMLHttpRequest();
+	
+    var url = "https://api.uclassify.com/v1/uClassify/Sentiment/classify/?readKey=ykENoeC2GKvx&text="+plot;
+    xmlhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        var myArr = JSON.parse(this.responseText);
+        myFunction(myArr);
+    }
+};
+xmlhttp.open("GET", url, true);
+xmlhttp.send();
+function myFunction(arr) {
+    var out = "";
+    out="<h2 style='color:#E0E0E0;'>Positive: "+arr.positive*100+"%</h2>"
+    out+="<h2 style='color:#E0E0E0;'>Negative: "+arr.negative*100+"%</h2>"
+	document.getElementById("id02").innerHTML = out;
+}
+}
+
+</script>
+  </body>
+</html>
